@@ -1,0 +1,14 @@
+---
+applications:
+- name: hello-broker
+  memory: 512M
+  instances: 1
+  buildpack: java_buildpack_offline
+  path: target/hello-broker.jar
+  services: [ hello-ds ]
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+    POSTGRES_HOST: 104.154.149.54
+    POSTGRES_PORT: 5432
+    SECURITY_USER_NAME: postgresUser
+    SECURITY_USER_PASSWORD: postgresPassword
