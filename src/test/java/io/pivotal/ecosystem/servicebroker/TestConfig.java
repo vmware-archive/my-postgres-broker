@@ -70,8 +70,11 @@ class TestConfig {
     @Bean
     public ServiceBinding serviceBindingWithParms() {
         Map<String, Object> params = new HashMap<>();
-        params.put(POSTGRES_DB, "testDb1234");
-        params.put(POSTGRES_USER, "testUser1234");
+
+        long l = System.currentTimeMillis();
+
+        params.put(POSTGRES_DB, "testDb" + l);
+        params.put(POSTGRES_USER, "testUser" + l);
         params.put(POSTGRES_PASSWORD, "testPassw0rd");
         CreateServiceInstanceBindingRequest request = new CreateServiceInstanceBindingRequest(null, null, null, null, params);
         return new ServiceBinding(request);
@@ -85,7 +88,9 @@ class TestConfig {
     @Bean
     public ServiceInstance serviceInstanceWithParams() {
         Map<String, Object> params = new HashMap<>();
-        params.put(POSTGRES_DB, "testDb1234");
+
+        long l = System.currentTimeMillis();
+        params.put(POSTGRES_DB, "testDb" + l);
         return new ServiceInstance(new CreateServiceInstanceRequest(null,null, null, null, params));
     }
 

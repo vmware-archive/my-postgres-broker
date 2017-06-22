@@ -132,7 +132,7 @@ class PostgresClient {
 
 
 
-    boolean checkUserExists(String uid, String db) {
-        return jdbcTemplate.queryForObject("SELECT count(*) from pg_roles WHERE rolname = ?", new Object[]{uid}, Integer.class) > 0;
-    }
+//    boolean checkUserExists(String uid, String db) {
+//        return jdbcTemplate.queryForObject("SELECT count(*) from pg_roles WHERE rolname = ?", new Object[]{uid}, Integer.class) > 0;
+//    }
 }

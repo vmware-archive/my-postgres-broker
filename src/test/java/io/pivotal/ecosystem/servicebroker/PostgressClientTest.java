@@ -22,6 +22,7 @@ import io.pivotal.ecosystem.servicebroker.model.ServiceBinding;
 import io.pivotal.ecosystem.servicebroker.model.ServiceInstance;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,6 +33,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import static io.pivotal.ecosystem.servicebroker.PostgresClient.POSTGRES_DB;
@@ -62,8 +64,8 @@ public class PostgressClientTest {
     @Autowired
     private DataSource dataSource;
 
-    @Autowired
-    private String dbUrl;
+//    @Autowired
+//    private String dbUrl;
 
     @Test
     public void testCreateAndDeleteWithParms() throws SQLException {
@@ -90,15 +92,37 @@ public class PostgressClientTest {
 
         assertEquals(db, userCredentials.get(POSTGRES_DB));
 
-        Connection c = dataSource.getConnection();
-        assertNotNull(c);
-        c.close();
-
-        assertTrue(client.checkUserExists(uid, db.toString()));
-        client.deleteUserCreds(uid, db.toString());
-        assertFalse(client.checkUserExists(uid, db.toString()));
+//        Connection c = dataSource.getConnection();
+//        assertNotNull(c);
+//        c.close();
 
         client.deleteDatabase(db.toString());
         assertFalse(client.checkDatabaseExists(db.toString()));
+
+//        assertTrue(client.checkUserExists(uid, db.toString()));
+
+        client.deleteUserCreds(uid, db.toString());
+//        assertFalse(client.checkUserExists(uid, db.toString()));
+
+
+    }
+
+    @Test
+    @Ignore
+    public void killConnections() throws Exception {
+
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            Statement stmt = conn.createStatement();
+
+
+
+            stmt.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid()");
+
+
+        } finally {
+            conn.close();
+        }
     }
 }
