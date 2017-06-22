@@ -35,13 +35,15 @@ class PostgresClient {
 
     private JdbcTemplate jdbcTemplate;
 
-    public static final String POSTGRES_DB = "postgresdb";
-    public static final String POSTGRES_USER = "postgresuser";
-    public static final String POSTGRES_PASSWORD = "postgrespassword";
-    public static final String POSTGRES_URI = "postgresuri";
-    public static final String POSTGRES_URI_SCHEME = "jdbc:postgresql";
-    public static final String POSTGRES_HOST_KEY = "POSTGRES_HOST";
-    public static final String POSTGRES_PORT_KEY = "POSTGRES_PORT";
+    static final String POSTGRES_DB = "POSTGRES_DB";
+    static final String POSTGRES_USER = "POSTGRES_USER";
+    static final String POSTGRES_PASSWORD = "POSTGRES_PASSWORD";
+    static final String POSTGRES_HOST_KEY = "POSTGRES_HOST";
+    static final String POSTGRES_PORT_KEY = "POSTGRES_PORT";
+
+
+    static final String POSTGRES_URI = "postgresuri";
+    static final String POSTGRES_URI_SCHEME = "jdbc:postgresql";
 
 
     PostgresClient(DataSource dataSource) {
@@ -74,7 +76,7 @@ class PostgresClient {
     /**
      * jdbcTemplate helps protect against sql injection, but also clean strings up just in case
      */
-    String clean(String s) {
+    private String clean(String s) {
         if (s == null) {
             return "";
         }
@@ -126,13 +128,8 @@ class PostgresClient {
         return userCredentials;
     }
 
-    void deleteUserCreds(String uid, String db) {
+    void deleteUserCreds(String uid) {
         jdbcTemplate.execute("DROP USER IF EXISTS " + uid);
     }
 
-
-
-//    boolean checkUserExists(String uid, String db) {
-//        return jdbcTemplate.queryForObject("SELECT count(*) from pg_roles WHERE rolname = ?", new Object[]{uid}, Integer.class) > 0;
-//    }
 }

@@ -44,6 +44,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Slf4j
+@Ignore
 public class PostgressClientTest {
 
     @Autowired
@@ -64,9 +65,6 @@ public class PostgressClientTest {
     @Autowired
     private DataSource dataSource;
 
-//    @Autowired
-//    private String dbUrl;
-
     @Test
     public void testCreateAndDeleteWithParms() throws SQLException {
         testCreateAndDeleteDatabase(serviceInstanceWithParams, serviceBindingWithParms);
@@ -78,6 +76,7 @@ public class PostgressClientTest {
     }
 
     private void testCreateAndDeleteDatabase(ServiceInstance serviceInstance, ServiceBinding binding) throws SQLException {
+        //REVOKE CONNECT ON DATABASE TARGET_DB FROM public;
         String db = client.createDatabase(serviceInstance);
         assertNotNull(db);
         binding.getParameters().put(POSTGRES_DB, db);
@@ -92,23 +91,15 @@ public class PostgressClientTest {
 
         assertEquals(db, userCredentials.get(POSTGRES_DB));
 
-//        Connection c = dataSource.getConnection();
-//        assertNotNull(c);
-//        c.close();
-
         client.deleteDatabase(db.toString());
         assertFalse(client.checkDatabaseExists(db.toString()));
 
-//        assertTrue(client.checkUserExists(uid, db.toString()));
-
-        client.deleteUserCreds(uid, db.toString());
-//        assertFalse(client.checkUserExists(uid, db.toString()));
-
+        client.deleteUserCreds(uid);
 
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void killConnections() throws Exception {
 
         Connection conn = null;
@@ -116,10 +107,7 @@ public class PostgressClientTest {
             conn = dataSource.getConnection();
             Statement stmt = conn.createStatement();
 
-
-
             stmt.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid()");
-
 
         } finally {
             conn.close();

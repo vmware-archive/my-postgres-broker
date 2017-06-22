@@ -71,6 +71,7 @@ class PostgresBroker extends DefaultServiceImpl {
             log.info("database: " + db + " created.");
             instance.getParameters().put(POSTGRES_DB, db);
         } catch (Throwable t) {
+            log.error("error creating database.", t);
             return new LastOperation(LastOperation.CREATE, LastOperation.FAILED, t.getMessage());
         }
 
@@ -85,11 +86,16 @@ class PostgresBroker extends DefaultServiceImpl {
      */
     @Override
     public LastOperation deleteInstance(ServiceInstance instance) {
-        try{
+        try {
             String db = instance.getParameters().get(POSTGRES_DB).toString();
+            String user = instance.getParameters().get(POSTGRES_USER).toString();
             log.info("deleting database: " + db);
             client.deleteDatabase(db);
+            log.info("********DELETED database: " + db);
+            client.deleteUserCreds(user);
+            log.info("********DELETED User creds: " + user);
         } catch (Throwable t) {
+            log.error("error deleting database.", t);
             return new LastOperation(LastOperation.DELETE, LastOperation.FAILED, t.getMessage());
         }
         return new LastOperation(LastOperation.DELETE, LastOperation.SUCCEEDED, instance.getId() + " deleting.");
@@ -142,7 +148,6 @@ class PostgresBroker extends DefaultServiceImpl {
     @Override
     public LastOperation deleteBinding(ServiceInstance instance, ServiceBinding binding) {
         log.info("unbinding app: " + binding.getAppGuid() + " from database: " + instance.getParameters().get(POSTGRES_DB));
-        client.deleteUserCreds(binding.getParameters().get(POSTGRES_USER).toString(), binding.getParameters().get(POSTGRES_DB).toString());
         return new LastOperation(LastOperation.UNBIND, LastOperation.SUCCEEDED, "bound.");
     }
 

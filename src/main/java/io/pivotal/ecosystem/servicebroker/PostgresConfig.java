@@ -19,19 +19,10 @@ public class PostgresConfig {
     @Bean
     public DataSource datasource(Environment env) {
         PGPoolingDataSource source = new PGPoolingDataSource();
-//        source.setDataSourceName("A Data Source");
         source.setServerName(env.getProperty(POSTGRES_HOST_KEY));
-        source.setDatabaseName("template1");
-        source.setUser("vcap");
-        source.setPassword("pivotal123");
-//        source.setMaxConnections(10);
-
-//        SQLServerConnectionPoolDataSource dataSource = new SQLServerConnectionPoolDataSource();
-//
-//        dataSource.setURL(dbUrl(env));
-//        dataSource.setUser(env.getProperty(SqlServerServiceInfo.USER_KEY));
-//        dataSource.setPassword(env.getProperty(SqlServerServiceInfo.PW_KEY));
-
+        source.setDatabaseName(env.getProperty(POSTGRES_DB));
+        source.setUser(env.getProperty(POSTGRES_USER));
+        source.setPassword(env.getProperty(POSTGRES_PASSWORD));
         return source;
     }
 
