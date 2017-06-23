@@ -8,10 +8,10 @@ applications:
   services: [ redis-for-postgres ]
   env:
     SPRING_PROFILES_ACTIVE: cloud
-    POSTGRES_HOST: 104.154.149.54
+    POSTGRES_HOST: <your host address>
     POSTGRES_PORT: 5432
-    POSTGRES_USER: vcap
-    POSTGRES_PASSWORD: pivotal123
+    POSTGRES_USER: <postgres admin user>
+    POSTGRES_PASSWORD: <postgres admin password>
     POSTGRES_DB: template1
-    SECURITY_USER_NAME: postgresUser
-    SECURITY_USER_PASSWORD: postgresPassword
+    SECURITY_USER_NAME: <a username for the broker to use>
+    SECURITY_USER_PASSWORD: <a password for the broker to use>

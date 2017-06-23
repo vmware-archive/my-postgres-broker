@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
- * <p>
+ * Copyright (C) 2017-Present Pivotal Software, Inc. All rights reserved.
+ *
  * This program and the accompanying materials are made available under
  * the terms of the under the Apache License, Version 2.0 (the "License”);
  * you may not use this file except in compliance with the License.
+ *
  * You may obtain a copy of the License at
- * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -52,13 +52,13 @@ class PostgresClient {
 
     String createDatabase(ServiceInstance instance) {
         String db = createDbName(instance.getParameters().get(POSTGRES_DB));
-        jdbcTemplate.execute("CREATE DATABASE " + db );
+        jdbcTemplate.execute("CREATE DATABASE " + db);
         log.info("Database: " + db + " created successfully...");
         return db;
     }
 
     void deleteDatabase(String db) {
-        jdbcTemplate.execute("DROP DATABASE IF EXISTS " + db );
+        jdbcTemplate.execute("DROP DATABASE IF EXISTS " + db);
         log.info("Database: " + db + " deleted successfully...");
     }
 
@@ -122,7 +122,7 @@ class PostgresClient {
         log.debug("creds: " + userCredentials.toString());
 
         jdbcTemplate.execute("CREATE USER " + userCredentials.get(POSTGRES_USER) + " WITH PASSWORD '" + userCredentials.get(POSTGRES_PASSWORD) + "'");
-        jdbcTemplate.execute("GRANT ALL PRIVILEGES ON DATABASE " + userCredentials.get(POSTGRES_DB) + " to " +userCredentials.get(POSTGRES_USER));
+        jdbcTemplate.execute("GRANT ALL PRIVILEGES ON DATABASE " + userCredentials.get(POSTGRES_DB) + " to " + userCredentials.get(POSTGRES_USER));
 
         log.info("Created user: " + userCredentials.get(POSTGRES_USER));
         return userCredentials;

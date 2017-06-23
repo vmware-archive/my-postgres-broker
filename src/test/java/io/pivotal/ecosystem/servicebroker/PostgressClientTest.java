@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2016-Present Pivotal Software, Inc. All rights reserved.
- * <p>
+ * Copyright (C) 2017-Present Pivotal Software, Inc. All rights reserved.
+ *
  * This program and the accompanying materials are made available under
  * the terms of the under the Apache License, Version 2.0 (the "License”);
  * you may not use this file except in compliance with the License.
+ *
  * You may obtain a copy of the License at
- * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -20,12 +20,10 @@ package io.pivotal.ecosystem.servicebroker;
 
 import io.pivotal.ecosystem.servicebroker.model.ServiceBinding;
 import io.pivotal.ecosystem.servicebroker.model.ServiceInstance;
-
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,9 +34,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
-import static io.pivotal.ecosystem.servicebroker.PostgresClient.POSTGRES_DB;
-import static io.pivotal.ecosystem.servicebroker.PostgresClient.POSTGRES_PASSWORD;
-import static io.pivotal.ecosystem.servicebroker.PostgresClient.POSTGRES_USER;
+import static io.pivotal.ecosystem.servicebroker.PostgresClient.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -91,8 +87,8 @@ public class PostgressClientTest {
 
         assertEquals(db, userCredentials.get(POSTGRES_DB));
 
-        client.deleteDatabase(db.toString());
-        assertFalse(client.checkDatabaseExists(db.toString()));
+        client.deleteDatabase(db);
+        assertFalse(client.checkDatabaseExists(db));
 
         client.deleteUserCreds(uid);
 
@@ -110,7 +106,9 @@ public class PostgressClientTest {
             stmt.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid()");
 
         } finally {
-            conn.close();
+            if (conn != null) {
+                conn.close();
+            }
         }
     }
 }
