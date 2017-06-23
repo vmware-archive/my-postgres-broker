@@ -31,7 +31,7 @@ There are two ways to install the broker: via a tile, or by pushing it as an app
   ```bash
   cf create-service p-redis shared-vm redis-for-postgres
   ```
-3. The broker makes use of spring-security to protect itself against unauthorized meddling. To set its username and password edit the [manifest.yml](https://github.com/cf-platform-eng/simple-service-broker/blob/master/sample-broker/manifest.yml) file as needed for your CF install (you probably don't want to check this in!).
+3. The broker makes use of spring-security to protect itself against unauthorized meddling. To set its username and password edit the [manifest.yml](https://github.com/cf-platform-eng/my-postgres-broker/blob/master/manifest.yml)) file as needed for your CF install (you probably don't want to check this in!).
 4. Push the broker to cf:
   
   ```bash
