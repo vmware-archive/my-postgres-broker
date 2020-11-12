@@ -1,3 +1,5 @@
+# my-postgres-broker is no longer actively maintained by VMware.
+
 # my-postgres-broker
 A demonstration cloud foundry service broker that can be used to integrate cf applications with postgres databases.
 
